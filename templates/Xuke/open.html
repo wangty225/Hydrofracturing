@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打开文件夹</title>
+</head>
+<body>
+    <h1>打开文件夹</h1>
+    <table border="1">
+        <thead><tr>
+            {% for k in data.0.keys %}
+                <td>{{ k }}</td>
+            {% endfor %}
+        </tr></thead>
+        <tbody>
+            {% for obj in data %}
+            <tr>
+                {% for v in obj.values %}
+                    <td>{{ v }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

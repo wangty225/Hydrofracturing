@@ -1,0 +1,124 @@
+{#{% extends "SandPlugRiskEvaluation/frame.html" %}#}
+{% load static %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Expires" content="0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-control" content="no-cache">
+<meta http-equiv="Cache" content="no-cache">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Hydrofracturing Analysis System description">
+      <title>Hydrofracturing Analysis System</title>
+      <base href="/" />
+      <base target="_parent" />
+
+
+
+      <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.css' %}">
+      <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap-theme.css' %}">
+      <link rel="stylesheet" href="{% static 'plugins/bootstrap-table/bootstrap-table.min.css' %}">
+      <link rel="stylesheet" href="{% static 'assets/css/index.css' %}">
+      <script type="text/javascript" src="{% static 'plugins/bootstrap/js/jquery.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/bootstrap/js/bootstrap.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/bootstrap-table/bootstrap-table.min.js' %}"></script>
+
+{#      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" crossorigin="anonymous">#}
+{#      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>#}
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="background-image: linear-gradient(to bottom, #337ab7 0%, #2e6da4 100%)">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" style="color: white" href="#">{{ PROJECTNAME }}</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul id="navUl" class="nav navbar-nav navbar-right" style="color: white">
+            <li ><a href="#" style="color: white">About</a></li>
+            <li><a href="#" style="color: white">Profile</a></li>
+            <li><a href="#" style="color: white">登录</a></li>
+            <li><a href="#" style="color: white">注销</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class=""><a href="/index" target="_parent">首页</a></li>
+            <li><a href="/SandPlugRiskEvaluation" target="_parent">砂堵判别系统</a></li>
+            <li><a href="#">砂堵预警系统</a></li>
+            <li><a href="#">功能模块3</a></li>
+            <li><a href="#">功能模块4</a></li>
+            <!-- 在这添加你的APP -->
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href="/Xuke">Xuke</a></li>
+            <li><a href="/demo1">demo1</a></li>
+            <li><a href="/FracturePropagation">G函数分析及裂缝扩展模拟</a></li>
+            <li><a href="/CalPerforationNum">射孔开启数目计算</a></li>
+            <li><a href="">Nav item again</a></li>
+            <li><a href="">One more nav</a></li>
+          </ul>
+
+        </div>
+
+      <div id="myFrame" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" >
+        <!-- 方法二，Xuke-->
+        {% if source is not null %}
+            <iframe style="height:90%; width: 100%" src="{{ source }}">首页</iframe>
+        {% endif %}
+         <!-- 方法一，SandPlugRiskEvaluation -->
+        {% block content %}
+
+        {% endblock %}
+      </div>
+
+    <script>
+    $("li").click(function (e){
+          $("li").removeClass("active");
+          $(e.target).addClass("active");
+    })
+    $('li').each(function () {
+        $(this).removeClass('active')
+        var Index = $(this).index();
+        var now = Cookies.get('Index')
+        if (!now && Index == 0) {
+            $(this).addClass('active')
+        }
+        else if (Index == now) {
+            $(this).addClass('active')
+        }
+        else {
+            return true
+        }
+    })
+    $('li').click(function () {
+        var Index = $(this).index();
+        Cookies.set('Index', Index)
+    })
+
+    </script>
+
+      </div>
+    </div>
+
+    <script src="{% static 'plugins/js/vendor/holder.min.js' %}"></script>
+    <script src="{% static 'plugins/js/ie10-viewport-bug-workaround.js' %}"></script>
+  </body>
+</html>

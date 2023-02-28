@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/SandPlugRiskEvaluation/core/eval.py" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/SandPlugRiskEvaluation/core/utils" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/SandPlugRiskEvaluation/data" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/SandPlugRiskEvaluation/data/有/2/开发 JHW00525第7-1级 (二队 20200621）  施工数据.csv" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SandPlugRiskEvaluation/data/有/2/开发 JHW00525第7-1级 (二队 20200621）  施工曲线图.jpg" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SandPlugRiskEvaluation/data/有/3/开发 JHW00525第15-1级 (二队 20200623）  施工曲线图.jpg" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/data/CalPerforationNum/excels/开发 JHW00525第6-1级 (二队 20200621）  施工数据.csv" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/data/CalPerforationNum/excels/测试数据1.csv" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/data/SandPlugRiskEvaluation/excels/JHW00728 (13-8) 压裂七队 20200615 施工曲线图.csv" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/static/CalPerforationNum/retImgs/ret.svg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/static/SandPlugRiskEvaluation/retImgs/ret.svg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/static/SandPlugRiskEvaluation/retImgs/ret2.svg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/templates/SandPlugRiskEvaluation/data" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/tree.txt" charset="GBK" />
+  </component>
+</project>

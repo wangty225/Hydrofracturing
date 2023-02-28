@@ -1,0 +1,209 @@
+{% extends "temp.html" %}
+{% load static %}
+{% block content %}
+    {{ block.super }}
+<div class="row">
+<div class="col-sm-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading" style="margin-bottom: 0px">
+            <h3 class="panel-title">G函数分析及裂缝扩展模拟系统</h3>
+        </div>
+    <!-- 按钮组 -->
+    <div class="row" >
+        <div class="col-md-6" >
+            <form method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="row" >
+                      <div class="input-group col-md-8"  style="margin: 5px 20px;">
+                          <input type="file" class="btn btn-default" style="display:inline"
+                                 accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                 id="file_" name="uploadedFile">
+                          <button type="submit" class="btn btn-primary" style="margin-left: 5px;">提交文件</button>
+                          <label style="color: #3e8f3e; margin-left: 20px">{{ message }}</label>
+                      </div>
+                  </div>
+            </form>
+        </div>
+        <div class="col-md-2" style="margin-top: 10px;">
+            <div class="dropdown" >
+              <button class="btn btn-default dropdown-toggle" type="button" style=" width: 90%"
+                      id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Plot type
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="#">3D plot</a></li>
+                <li><a href="#">Cross plot</a></li>
+              </ul>
+            </div>
+        </div>
+        <div class="col-md-2" style="margin-top: 10px;">
+            <div class="dropdown" >
+              <button class="btn btn-default dropdown-toggle" type="button" style=" width: 90%"
+                      id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Geometry model
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a>PKN model</a></li>
+                <li><a href="#">KGD model</a></li>
+              </ul>
+            </div>
+        </div>
+
+        <div class="col-md-2" style="margin-top: 10px;">
+              <button class="btn btn-default dropdown-toggle" type="button" style=" width: 90%"
+                      id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                calculate
+              </button>
+        </div>
+
+    </div>
+    <!-- frame和input组 -->
+    <div class="row">
+        <div class="col-md-6" style="margin-left:20px; padding: 20px 0px 0 10px;">
+            <div>
+{#                <iframe src="{% static 'SandPlugRiskEvaluation/retImgs/default.png'%}" width="100%" height="70%"></iframe>#}
+                <iframe src="{% static 'fig.html' %}" width="100%" height="70%"></iframe>
+            </div>
+        </div>
+
+        <div class="col-md-2" style="padding: 20px 0 0 20px">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Output</div>
+                <div class="panel-body">
+                    <div>
+                        <p style="display: inline-block;">裂缝半长</p>
+                        <input type="text" id="" name="" style="float: right; width: 30%">
+                    </div>
+                    <div>
+                        <p style="display: inline-block">最大缝宽</p>
+                        <input type="text" id="" name="" style="float: right; width: 30%">
+                    </div>
+                    <div>
+                        <p style="display: inline-block">平均缝宽</p>
+                        <input type="text" id="" name="" style="float: right; width: 30%">
+                    </div>
+                    <div>
+                        <p style="display: inline-block">流体当量粘度</p>
+                        <input type="text" id="" name="" style="float: right; width: 30%">
+                    </div>
+                    <div>
+                        <p style="display: inline-block">最大净流体压力</p>
+                        <input type="text" id="" name="" style="float: right; width: 30%">
+                    </div>
+                    <div>
+                        <p style="display: inline-block">注入体积</p>
+                        <input type="text" id="" name="" style="float: right; width: 30%">
+                    </div>
+                    <div>
+                        <p style="display: inline-block">压裂体积</p>
+                        <input type="text" id="" name=""style="float: right; width: 30%">
+                    </div>
+                    <div>
+                        <p style="display: inline-block">滤失体积</p>
+                        <input type="text" id="" name=""style="float: right; width: 30%">
+                    </div>
+                    <div>
+                        <p style="display: inline-block">液体效率</p>
+                        <input type="text" id="" name=""style="float: right; width: 30%">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2" style="padding: 20px 0 0 20px">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Output</div>
+                <div class="panel-body">
+                    <div>
+                        <p style="display: inline-block;">裂缝半长</p>
+                        <input type="text" id="" name="" style="float: right; width: 30%">
+                    </div>
+                    <div>
+                        <p style="display: inline-block">最大缝宽</p>
+                        <input type="text" id="" name="" style="float: right; width: 30%">
+                    </div>
+                    <div>
+                        <p style="display: inline-block">平均缝宽</p>
+                        <input type="text" id="" name="" style="float: right; width: 30%">
+                    </div>
+                    <div>
+                        <p style="display: inline-block">流体当量粘度</p>
+                        <input type="text" id="" name="" style="float: right; width: 30%">
+                    </div>
+                    <div>
+                        <p style="display: inline-block">最大净流体压力</p>
+                        <input type="text" id="" name="" style="float: right; width: 30%">
+                    </div>
+                    <div>
+                        <p style="display: inline-block">注入体积</p>
+                        <input type="text" id="" name="" style="float: right; width: 30%">
+                    </div>
+                    <div>
+                        <p style="display: inline-block">压裂体积</p>
+                        <input type="text" id="" name=""style="float: right; width: 30%">
+                    </div>
+                    <div>
+                        <p style="display: inline-block">滤失体积</p>
+                        <input type="text" id="" name=""style="float: right; width: 30%">
+                    </div>
+                    <div>
+                        <p style="display: inline-block">液体效率</p>
+                        <input type="text" id="" name=""style="float: right; width: 30%">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 文件列表 -->
+            <div style="margin:10px 20px 20px 10px;display:block; width: 98%; height:160px; overflow: auto; border:0px solid #337ab7">
+                <!-- Table -->
+                <table class="table table-bordered scrolltable" style="width: 98%; margin: 5px; font-size: small;">
+                    <thead style="">
+                        <tr>
+                            <th>上传时间</th>
+                            <th>文件名</th>
+                            <th>操作选项</th>
+                        </tr>
+                    </thead>
+                        <tbody style="">
+                            {% for item in file_list %}
+                                <tr>
+                                    <td>{{ item.0 }}</td>
+                                    <td>{{ item.1 }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-success" style="margin-left: 5px; padding:2px 4px; font-size: small;" onclick="loadFile('{{ item.1 }}');">载入数据</button>
+{#                                        <button type="button" class="btn btn-danger" style="margin-left: 5px; padding:2px 4px; font-size: small;" data-toggle="modal"#}
+{#                                                data-target="#startEvalModal" onclick="showDialog('{{ item.1 }}')">开始预警</button>#}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                </table>
+        </div>
+{#    <div class="row">#}
+{#        <div class="col-md-10">#}
+{#            <div class="panel panel-primary">#}
+{#                <div class="panel-heading">输入参数</div>#}
+{#                <div class="panel-body">#}
+{#                     <input type="text" id="" name=""style="">#}
+{##}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+    </div>
+</div>
+</div>
+<script>
+    var fileChosen = null
+    function loadFile(fileName){
+        if (fileName==null)
+            alert("空文件名")
+        else
+            fileChosen=fileName
+            alert(fileChosen)
+    }
+
+</script>
+{% endblock content %}

@@ -1,0 +1,448 @@
+{% extends "temp.html" %}
+{% load static %}
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading" style="margin-bottom: 0px">
+                    <h3 class="panel-title">G函数分析及裂缝扩展模拟系统</h3>
+                </div>
+                <!-- 按钮组 -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="input-group col-md-8" style="margin: 5px 20px;">
+                                    <input type="file" class="btn btn-default" style="display:inline"
+                                           accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                           id="file_" name="uploadedFile">
+                                    <button type="submit" class="btn btn-primary" style="margin-left: 5px;">提交文件
+                                    </button>
+                                    <label id="label" style="color: #3e8f3e; margin-left: 20px">{{ message }}</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-2" style="margin-top: 10px;">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" style=" width: 90%"
+                                    id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                Plot type
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li><a href="#">3D plot</a></li>
+                                <li><a href="#">Cross plot</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-2" style="margin-top: 10px;">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" style=" width: 90%"
+                                    id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                Geometry model
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li><a>PKN model</a></li>
+                                <li><a href="#">KGD model</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    {#                    <div class="col-md-2" style="margin-top: 10px;">#}
+                    {#                        <button class="btn btn-default dropdown-toggle" type="button" style=" width: 90%"#}
+                    {#                                id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">#}
+                    {#                            calculate#}
+                    {#                        </button>#}
+                    {#                    </div>#}
+                    <div class="col-md-2" style="margin-top: 10px;">
+                        <button class="btn btn-default dropdown-toggle" type="button" style="width: 90%" id="calculate">
+                            开始计算
+                        </button>
+                    </div>
+                </div>
+                <div id="download">
+                    {% if flag == False %}
+                        <div class="row" style="margin-left: 3px">
+                            <div class="col-md-2">
+                                <a href="/FracturePropagation/download" class="btn btn-primary">下载分析报告</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <!-- frame和input组 -->
+                <div class="row">
+                    <div class="col-md-4" style="margin-left:20px;padding: 20px 0px 0 10px;">
+                        <div>
+                            {#                <iframe src="{% static 'SandPlugRiskEvaluation/retImgs/default.png'%}" width="100%" height="70%"></iframe>#}
+                            {#                <iframe src="{% static 'fig.html' %}" width="100%" height="70%"></iframe>#}
+
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">日志文件</div>
+                            <div class="panel-body">
+                                <Textarea id="textarea"
+                                          style="background-color: black; color: white; width:100%; height:350px">{{ logs }}</Textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" style="margin-left:20px;padding: 20px 0px 0 10px;">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">输入参数</div>
+                            <div class="panel-body">
+                                <div>
+                                    <p style="display: inline-block;">最小水平主应力</p>
+                                    <input type="text" id="cs1" name="" style="float: right; width: 30%" required>
+                                </div>
+                                <div>
+                                    <p style="display: inline-block">幂律系数</p>
+                                    <input type="text" id="cs2" name="" style="float: right; width: 30%" required>
+                                </div>
+                                {#                                <div>#}
+                                {#                                    <p style="display: inline-block">缝长比例系数：(2*n/(2+n))</p>#}
+                                {#                                    <input type="text" id="cs3" name="" style="float: right; width: 30%">#}
+                                {#                                </div>#}
+                                <div>
+                                    <p style="display: inline-block">裂缝条数</p>
+                                    <input type="text" id="cs3" name="" style="float: right; width: 30%" required>
+                                </div>
+                                <div>
+                                    <p style="display: inline-block">相邻簇间距</p>
+                                    <input type="text" id="cs4" name="" style="float: right; width: 30%" required>
+                                </div>
+                                <div>
+                                    <p style="display: inline-block">缝高</p>
+                                    <input type="text" id="cs5" name="" style="float: right; width: 30%" required>
+                                </div>
+                                <div>
+                                    <p style="display: inline-block">滤失高度</p>
+                                    <input type="text" id="cs6" name="" style="float: right; width: 30%" required>
+                                </div>
+                                <div>
+                                    <p style="display: inline-block">排量</p>
+                                    <input type="text" id="cs7" name="" style="float: right; width: 30%" required>
+                                </div>
+                                <div>
+                                    <p style="display: inline-block">泵注时间</p>
+                                    <input type="text" id="cs8" name="" style="float: right; width: 30%" required>
+                                </div>
+
+                                {#                                <div>#}
+                                {#                                    <a class="btn-sm btn-primary" id="btn">开始执行</a>#}
+                                {#                                </div>#}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" style="margin-left:20px;padding: 20px 0px 0 10px;">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">输入参数</div>
+                            <div class="panel-body">
+                                <div>
+                                    <p style="display: inline-block;">杨氏模量</p>
+                                    <input type="text" id="cs9" name="" style="float: right; width: 30%" required>
+                                </div>
+                                <div>
+                                    <p style="display: inline-block">泊松比</p>
+                                    <input type="text" id="cs10" name="" style="float: right; width: 30%" required>
+                                </div>
+                                <div>
+                                    <p style="display: inline-block">瞬时停泵压力</p>
+                                    <input type="text" id="cs11" name="" style="float: right; width: 30%" required>
+                                </div>
+                                <div>
+                                    <p style="display: inline-block">滤失过程i点压力</p>
+                                    <input type="text" id="cs12" name="" style="float: right; width: 30%" required>
+                                </div>
+                                <div>
+                                    <p style="display: inline-block">滤失过程i点闭合时间</p>
+                                    <input type="text" id="cs13" name="" style="float: right; width: 30%" required>
+                                </div>
+                                <div>
+                                    <p style="display: inline-block">滤失过程j点压力</p>
+                                    <input type="text" id="cs14" name="" style="float: right; width: 30%" required>
+                                </div>
+                                <div>
+                                    <p style="display: inline-block">滤失过程j点闭合时间</p>
+                                    <input type="text" id="cs15" name="" style="float: right; width: 30%" required>
+                                </div>
+                                <div>
+                                    <p style="display: inline-block">裂缝延伸系数</p>
+                                    <input type="text" id="cs16" name="" style="float: right; width: 30%" required>
+                                </div>
+                                <div>
+                                    <p style="display: inline-block">裂缝模型</p>
+                                    <input type="text" id="cs17" name="" style="float: right; width: 30%" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5" style="padding: 20px 0 0 20px">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">输出：2D图像</div>
+                        <div class="panel-body">
+                            {#                                                            <div>#}
+                            {#                                                                <p style="display: inline-block;">裂缝半长</p>#}
+                            {#                                                                <input type="text" id="" name="" style="float: right; width: 30%">#}
+                            {#                                                            </div>#}
+                            {#                                                            <div>#}
+                            {#                                                                <p style="display: inline-block">最大缝宽</p>#}
+                            {#                                                                <input type="text" id="" name="" style="float: right; width: 30%">#}
+                            {#                                                            </div>#}
+                            {#                                                            <div>#}
+                            {#                                                                <p style="display: inline-block">平均缝宽</p>#}
+                            {#                                                                <input type="text" id="" name="" style="float: right; width: 30%">#}
+                            {#                                                            </div>#}
+                            {#                                                            <div>#}
+                            {#                                                                <p style="display: inline-block">流体当量粘度</p>#}
+                            {#                                                                <input type="text" id="" name="" style="float: right; width: 30%">#}
+                            {#                                                            </div>#}
+                            {#                                                            <div>#}
+                            {#                                                                <p style="display: inline-block">最大净流体压力</p>#}
+                            {#                                                                <input type="text" id="" name="" style="float: right; width: 30%">#}
+                            {#                                                            </div>#}
+                            {#                                                            <div>#}
+                            {#                                                                <p style="display: inline-block">注入体积</p>#}
+                            {#                                                                <input type="text" id="" name="" style="float: right; width: 30%">#}
+                            {#                                                            </div>#}
+                            {#                                                            <div>#}
+                            {#                                                                <p style="display: inline-block">压裂体积</p>#}
+                            {#                                                                <input type="text" id="" name="" style="float: right; width: 30%">#}
+                            {#                                                            </div>#}
+                            {#                                                            <div>#}
+                            {#                                                                <p style="display: inline-block">滤失体积</p>#}
+                            {#                                                                <input type="text" id="" name="" style="float: right; width: 30%">#}
+                            {#                                                            </div>#}
+                            {#                                                            <div>#}
+                            {#                                                                <p style="display: inline-block">液体效率</p>#}
+                            {#                                                                <input type="text" id="" name="" style="float: right; width: 30%">#}
+                            {#                                                            </div>#}
+                            <div id="2D">
+                                {% if flag == True %}
+                                    <img src="" alt="未载入测试数据，请载入！">
+                                {% else %}
+                                    <img src="../../static/FracturePropagation/result/{{ name }}/2D.png"
+                                         style="width: 100%;height: 350px">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5" style="padding: 20px 0 0 20px">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">输出：3D图像</div>
+                        <div class="panel-body">
+                            {#                                <div>#}
+                            {#                                    <p style="display: inline-block;">裂缝半长</p>#}
+                            {#                                    <input type="text" id="" name="" style="float: right; width: 30%">#}
+                            {#                                </div>#}
+                            {#                                <div>#}
+                            {#                                    <p style="display: inline-block">最大缝宽</p>#}
+                            {#                                    <input type="text" id="" name="" style="float: right; width: 30%">#}
+                            {#                                </div>#}
+                            {#                                <div>#}
+                            {#                                    <p style="display: inline-block">平均缝宽</p>#}
+                            {#                                    <input type="text" id="" name="" style="float: right; width: 30%">#}
+                            {#                                </div>#}
+                            {#                                <div>#}
+                            {#                                    <p style="display: inline-block">流体当量粘度</p>#}
+                            {#                                    <input type="text" id="" name="" style="float: right; width: 30%">#}
+                            {#                                </div>#}
+                            {#                                <div>#}
+                            {#                                    <p style="display: inline-block">最大净流体压力</p>#}
+                            {#                                    <input type="text" id="" name="" style="float: right; width: 30%">#}
+                            {#                                </div>#}
+                            {#                                <div>#}
+                            {#                                    <p style="display: inline-block">注入体积</p>#}
+                            {#                                    <input type="text" id="" name="" style="float: right; width: 30%">#}
+                            {#                                </div>#}
+                            {#                                <div>#}
+                            {#                                    <p style="display: inline-block">压裂体积</p>#}
+                            {#                                    <input type="text" id="" name="" style="float: right; width: 30%">#}
+                            {#                                </div>#}
+                            {#                                <div>#}
+                            {#                                    <p style="display: inline-block">滤失体积</p>#}
+                            {#                                    <input type="text" id="" name="" style="float: right; width: 30%">#}
+                            {#                                </div>#}
+                            {#                                <div>#}
+                            {#                                    <p style="display: inline-block">液体效率</p>#}
+                            {#                                    <input type="text" id="" name="" style="float: right; width: 30%">#}
+                            {#                                </div>#}
+                            <div id="3D">
+                                {% if flag == True %}
+                                    <img src="" alt="未载入测试数据，请载入！">
+                                {% else %}
+                                    <img src="../../static/FracturePropagation/result/{{ name }}/3D.png"
+                                         style="width: 100%;height: 350px">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 文件列表 -->
+                <div style="margin:10px 20px 20px 10px;display:block; width: 98%; height:160px; overflow: auto; border:0px solid #337ab7">
+                    <!-- Table -->
+                    <table class="table table-bordered scrolltable" style="width: 98%; margin: 5px; font-size: small;">
+                        <thead style="">
+                        <tr>
+                            <th>上传时间</th>
+                            <th>文件名</th>
+                            <th>操作选项</th>
+                        </tr>
+                        </thead>
+                        <tbody style="">
+                        {% for item in file_list %}
+                            <tr>
+                                <td>{{ item.0 }}</td>
+                                <td>{{ item.1 }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-success"
+                                            style="margin-left: 5px; padding:2px 4px; font-size: small;"
+                                            onclick="loadFile('{{ item.1 }}');">载入数据
+                                    </button>
+                                    {#                                        <button type="button" class="btn btn-danger" style="margin-left: 5px; padding:2px 4px; font-size: small;" data-toggle="modal"#}
+                                    {#                                                data-target="#startEvalModal" onclick="showDialog('{{ item.1 }}')">开始预警</button>#}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {#    <div class="row">#}
+                {#        <div class="col-md-10">#}
+                {#            <div class="panel panel-primary">#}
+                {#                <div class="panel-heading">输入参数</div>#}
+                {#                <div class="panel-body">#}
+                {#                     <input type="text" id="" name=""style="">#}
+                {##}
+                {#                </div>#}
+                {#            </div>#}
+                {#        </div>#}
+                {#    </div>#}
+            </div>
+        </div>
+    </div>
+    <script>
+        var fileChosen = null
+
+        function loadFile(fileName) {
+            if (fileName == null)
+                alert("空文件名")
+            else
+                fileChosen = fileName
+            alert(fileChosen)
+        }
+
+        $("#calculate").click(function () {
+            data = [
+                {
+                    "description": "最小水平主应力（MPa, 参考值：10）",
+                    "value": $("#cs1").val(),
+                    "name": "S1"
+                },
+                {
+                    "description": "幂律系数（无因次，参考值：2）：",
+                    "value": $("#cs2").val(),
+                    "name": "n"
+                },
+                {
+                    "description": "裂缝条数（参考：2，3，4，5）：",
+                    "value": $("#cs3").val(),
+                    "name": "frac_num"
+                },
+                {
+                    "description": "相邻簇间距（m，参考值：20）：",
+                    "value": $("#cs4").val(),
+                    "name": "frac_spac"
+                },
+                {
+                    "description": "缝高（m，参考值：20）：",
+                    "value": $("#cs5").val(),
+                    "name": "Hw"
+                },
+                {
+                    "description": "滤失高度（m，参考值：20）：",
+                    "value": $("#cs6").val(),
+                    "name": "Hp"
+                },
+                {
+                    "description": "排量（方/s，参考值：0.2）：",
+                    "value": $("#cs7").val(),
+                    "name": "Q"
+                },
+                {
+                    "description": "泵注时间（s，参考值：20）：",
+                    "value": $("#cs8").val(),
+                    "name": "tp"
+                },
+                {
+                    "description": "杨氏模量（MPa，参考值：30000）",
+                    "value": $("#cs9").val(),
+                    "name": "E"
+                },
+                {
+                    "description": "泊松比（无因次，参考值：0.25）",
+                    "value": $("#cs10").val(),
+                    "name": "v"
+                },
+                {
+                    "description": "瞬时停泵压力（MPa，参考值：15）",
+                    "value": $("#cs11").val(),
+                    "name": "ISIP"
+                },
+                {
+                    "description": "滤失过程i点压力（MPa，参考值：大于等于最小水平主应力,10.1228）：",
+                    "value": $("#cs12").val(),
+                    "name": "P_i"
+                },
+                {
+                    "description": "滤失过程i点闭合时间（s，参考值：小于等于裂缝完全闭合时间,11236.1）：",
+                    "value": $("#cs13").val(),
+                    "name": "t_i"
+                },
+                {
+                    "description": "滤失过程j点压力（MPa，参考值：大于等于最小水平主应力,11.7964）",
+                    "value": $("#cs14").val(),
+                    "name": "P_j"
+                },
+                {
+                    "description": "滤失过程j点闭合时间（s，参考值：小于等于裂缝完全闭合时间,3016.13）",
+                    "value": $("#cs15").val(),
+                    "name": "t_j"
+                },
+                {
+                    "description": "裂缝延伸系数（无因次，参考值：1.5）：",
+                    "value": $("#cs16").val(),
+                    "name": "m"
+                },
+                {
+                    "description": "裂缝模型（PKN/KGD）",
+                    "value": $("#cs17").val(),
+                    "name": "frac_type"
+                }
+            ]
+            $.ajax({
+                url: "/FracturePropagation/calculate",
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "json",
+                success: function (data) {
+                    let message = data.message
+                    let logs = data.logs
+                    let flag = data.flag
+                    let name = data.name
+                    $("#label").text(message)
+                    $("#textarea").text(logs)
+                    $("#download").html("<div class='row' style='margin-left: 3px'><div class='col-md-2'><a href='/FracturePropagation/download' class='btn btn-primary'>下载分析报告</a></div></div>")
+                    $("#2D").html("<img src='../../static/FracturePropagation/result/test/2D.png' style='width: 100%;height: 350px'>" )
+                    $("#3D").html("<img src='../../static/FracturePropagation/result/test/3D.png' style='width: 100%;height: 350px'>" )
+                }
+            })
+        })
+
+
+    </script>
+{% endblock content %}

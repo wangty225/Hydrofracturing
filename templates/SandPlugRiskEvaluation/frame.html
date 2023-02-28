@@ -1,0 +1,163 @@
+{% extends "temp.html" %}
+{% load static %}
+{% block content %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static  'plugins/echarts/echarts.min.js' %}"></script>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">砂堵判别系统</h3>
+                    </div>
+                    <div class="panel-body">
+                        根据给定的压力，排量，砂浓度等信息，判断是否发生砂堵，并进行可视化。
+                    </div>
+                    <form method="post" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <div class="row" >
+                              <div class="input-group col-md-8"  style="margin: 5px 20px;">
+                                  <input type="file" class="btn btn-default" style="display:inline"
+                                         accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                         id="file_" name="uploadedFile">
+                                  <button type="submit" class="btn btn-primary" style="margin-left: 5px;">提交文件</button>
+                                  <label style="color: #3e8f3e; margin-left: 20px">{{ message }}</label>
+                              </div>
+                          </div>
+                    </form>
+
+
+        <div class="row">
+            <div class="col-sm-6 ">
+                <div id="chart" style="width: 100%; height:450px; margin-top: 20px;"></div>
+                <script type="text/javascript" src="{% static 'SandPlugRiskEvaluation/myCharts.js' %}"></script>
+            </div>
+            <div class="col-sm-6">
+                <img src="{% static 'SandPlugRiskEvaluation/retImgs/default.png'%}" id='retImg' class="img-responsive" alt="判别结果" width="90%">
+{#                <img src="{% static 'SandPlugRiskEvaluation/retImgs/ret.svg'%}" class="img-responsive" id='retImg' alt="判别结果" width="90%">#}
+                <center>
+                    <label>
+                        当前时刻:
+                            <span id='timeSpan' style="color: #3e8f3e">{{ t }}</span>&nbsp
+                        风险等级:
+                            {% if level is not 1 %}
+                                <span id='levelSpan' style="color: #3e8f3e">{{ level }}</span>
+                            {% else %}
+                                <span id='levelSpan' style="color: #a41515">{{ level }}</span>
+                            {% endif %}
+                    </label>
+                </center>
+             <button type="button" class="btn btn-success" style="margin-left: 5px;" onclick="startEvalFun(0)">停止预警</button>
+
+            </div>
+        </div>
+
+        <div style="margin:10px 20px 20px 10px;display:block; width: 98%; height:160px; overflow: auto; border:0px solid #337ab7">
+                <!-- Table -->
+                <table class="table table-bordered scrolltable" style="width: 98%; margin: 5px; font-size: small;">
+                    <thead style="">
+                        <tr>
+                            <th>上传时间</th>
+                            <th>文件名</th>
+                            <th>操作选项</th>
+                        </tr>
+                    </thead>
+                        <tbody style="">
+                            {% for item in file_list %}
+                                <tr>
+                                    <td>{{ item.0 }}</td>
+                                    <td>{{ item.1 }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-success" style="margin-left: 5px; padding:2px 4px; font-size: small;" onclick="loadChart('{{ item.1 }}');">载入数据</button>
+                                        <button type="button" class="btn btn-danger" style="margin-left: 5px; padding:2px 4px; font-size: small;" data-toggle="modal"
+                                                data-target="#startEvalModal" onclick="showDialog('{{ item.1 }}')">开始预警</button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                </table>
+        </div>
+                </div> <!-- panel end -->
+            </div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="startEvalModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">模拟预警</h4>
+            </div>
+            <div class="modal-body">
+{#                <p>输入开始时刻（秒）开始预警</p>#}
+                <input type="text" class="form-control" id="fileName"/><br/>
+                <input type="text" class="form-control" id="startSec" placeholder="输入开始的时刻（秒）"/><br/>
+{#                <input type="text" class="form-control" id="endSec" placeholder="输入结束的时刻（秒）"/>#}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="startEvalFun(1)">提交更改</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<script>
+    function showDialog(s){
+        $('#fileName').val(s);
+    }
+    var idInterval
+    function startEvalFun(flag){
+        if(flag==1){
+            var startSec = parseInt(document.getElementById("startSec").value)
+            var fileName = document.getElementById("fileName").value
+            {#sendReq(startSec, fileName)#}
+            window.clearInterval(idInterval);
+            idInterval= setInterval(next, 1000);
+            function next(){
+                startSec = startSec + 1
+                sendReq(startSec, fileName)
+            }
+        }
+        else if(flag==0){
+            window.clearInterval(idInterval);
+        }
+    }
+
+    function sendReq(startSec, fileName){
+        $.ajax({
+        type: "post",
+        url: "/SandPlugRiskEvaluation/eval",
+        data:{
+            startSec: startSec,
+            fileName: fileName,
+        },
+        dataType: 'json',
+        success: function (result) {
+            if (result.data==-1){
+                alert("结束预警。")
+                return
+            }
+            $("#retImg").attr('src', 'static/SandPlugRiskEvaluation/retImgs/ret.svg?t=' + startSec + '&rand=' + Math.random())
+            {#$("#retImg").attr('src', 'static/fig.html?rand=' + Math.random())#}
+            $("#timeSpan").html(startSec+'秒&nbsp;')
+            if(result.data==4){
+                $("#levelSpan").html(result.data)
+                $("#levelSpan").attr('style', 'color: #3e8f3e')
+            }
+            else{
+                $("#levelSpan").html(result.data)
+                $("#levelSpan").attr('style', 'color: #a41515')
+                alert("注意！当前风险等级为："+result.data)
+            }
+        }
+    });
+    }
+    $("li").click(function (e){
+          $("li").removeClass("active");
+          $(e.target).addClass("active");
+    })
+</script>
+
+    </div>
+    </div>
+{% endblock content %}
