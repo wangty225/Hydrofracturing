@@ -256,7 +256,6 @@ cd .......\Hydrofracturing
 >        【其他内容不变，在此处编辑前端内容即可。】
 >    
 >    {% endblock content %}
->        
 >    ```
 > 
 >    <mark>     方法②：</mark>iframe方法，temp页面里面套页面，两个页面互相独立，需要通过继承使用父页面样式。
@@ -316,11 +315,7 @@ cd .......\Hydrofracturing
 >     path('demo2', views.indexdemo2),  ## 加入此处
 >     path('getPage2', views.getPage2)
 > ]
-> 
-> 
 > ```
-
-
 
 > 4. 前端引入bootstrap.css的方法，注意href的写法：
 > 
@@ -329,8 +324,6 @@ cd .......\Hydrofracturing
 > ```
 
 > 5. 自定义的css，js文件存放位置：```static\【APPName】\```文件夹里
->    
->    
 > 
 > 6. 引入自定义的格式文件如`SandPlugRiskEvaluation\myChart.js`
 > 
@@ -364,3 +357,5 @@ cd .......\Hydrofracturing
 
 > iframe继承父窗口引入的JS,CSS
 > ```    <script type="text/javascript" src="{% static 'assets/js/inherit.js' %}"></script>```
+
+test add
