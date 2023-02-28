@@ -1,2 +1,5 @@
-static/plugins/* linguist-vendored
-data/* linguist-generated=true
+# static/** linguist-vendored
+data/** linguist-generated=true
+templates/Xuke/** linguist-generated=true
+templates/*.html linguist-generated=true
+static/*.html linguist-generated=true
