@@ -1,2 +1,2 @@
-static/plugins/** linguist-vendored
-data/** linguist-vendored
+static/plugins/** linguist-generated=true
+data/** linguist-generated=true
