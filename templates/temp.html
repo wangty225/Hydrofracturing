@@ -123,7 +123,7 @@
     <script>
       fetch("https://lowcode.birdu.net/api/getTemplateList").then(res=>res.json()).then(res=>{
         document.getElementById("low-code-navbar").innerHTML=JSON.parse(res.res).reduce((pre,node)=>{
-          return pre+`<li><a href="/#lowcode/${node.id}">${node.name}</a></li>`
+          return pre+node.display?`<li><a href="/#lowcode/${node.id}">${node.name}</a></li>`:""
         },'')
       })
       function router(){
