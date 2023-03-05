@@ -121,9 +121,9 @@
       </div>
     </div>
     <script>
-      fetch("https://lowcode.birdu.net/api/getTemplateList").then(res=>res.json()).then(res=>{
-        document.getElementById("low-code-navbar").innerHTML=JSON.parse(res.res).reduce((pre,node)=>{
-          return pre+node.display?`<li><a href="/#lowcode/${node.id}">${node.name}</a></li>`:""
+      fetch("https://lowcode.birdu.net/api/getTemplateList").then(res=>res.json()).then(({res})=>{
+        document.getElementById("low-code-navbar").innerHTML=res.reduce((pre,node)=>{
+          return pre+(node.display?`<li><a href="/#lowcode/${node.id}">${node.name}</a></li>`:"")
         },'')
       })
       function router(){
