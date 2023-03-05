@@ -44,6 +44,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul id="navUl" class="nav navbar-nav navbar-right" style="color: white">
+            <li><a href="#lowcode/edit" style="color: white">编辑低代码页面</a></li>
             <li ><a href="#" style="color: white">About</a></li>
             <li><a href="#" style="color: white">Profile</a></li>
             <li><a href="#" style="color: white">登录</a></li>
@@ -74,6 +75,8 @@
             <li><a href="/CalPerforationNum">射孔开启数目计算</a></li>
             <li><a href="">Nav item again</a></li>
             <li><a href="">One more nav</a></li>
+          </ul>
+          <ul class="nav nav-sidebar" id="low-code-navbar">
           </ul>
 
         </div>
@@ -117,6 +120,29 @@
 
       </div>
     </div>
+    <script>
+      fetch("https://lowcode.birdu.net/api/getTemplateList").then(res=>res.json()).then(res=>{
+        document.getElementById("low-code-navbar").innerHTML=JSON.parse(res.res).reduce((pre,node)=>{
+          return pre+`<li><a href="/#lowcode/${node.id}">${node.name}</a></li>`
+        },'')
+      })
+      function router(){
+        const name=location.hash.match(/^#lowcode\/(?<name>.+)$/)?.groups?.name
+        let targetSrc=""
+        if(name==="edit"){
+          targetSrc="https://lowcode.birdu.net/editor"
+        }else if(Number(name)){
+          targetSrc=`https://lowcode.birdu.net/preview/${name}`
+        }
+        if(targetSrc){
+          document.getElementById("myFrame").innerHTML=
+          `<iframe style="border:0;width:calc(100% - 20px);height:calc(100% - 20px);"
+            src="${targetSrc}"></iframe>`
+        }
+      }
+      window.onhashchange=router
+      router()
+    </script>
 
     <script src="{% static 'plugins/js/vendor/holder.min.js' %}"></script>
     <script src="{% static 'plugins/js/ie10-viewport-bug-workaround.js' %}"></script>
