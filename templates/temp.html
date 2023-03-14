@@ -121,8 +121,7 @@
       </div>
     </div>
     <script>
-      const base="https://101.43.131.142:14781"
-      fetch(base+"/api/getTemplateList").then(res=>res.json()).then(({res})=>{
+      fetch("https://101.43.131.142:14781/api/getTemplateList").then(res=>res.json()).then(({res})=>{
         document.getElementById("low-code-navbar").innerHTML=res.reduce((pre,node)=>{
           return pre+(node.display?`<li><a href="/#lowcode/preview/${node.id}">${node.name}</a></li>`:"")
         },'')
@@ -130,7 +129,7 @@
       function router(){
         const to=location.hash.match(/^#lowcode(?<to>.+)$/)?.groups?.to
         if(to){
-          let targetSrc=base+to
+          let targetSrc="https://lowcode.birdu.net"+to
           document.getElementById("myFrame").innerHTML=
           `<iframe style="border:0;width:calc(100% - 20px);height:calc(100% - 20px);"
             src="${targetSrc}"></iframe>`
