@@ -44,7 +44,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul id="navUl" class="nav navbar-nav navbar-right" style="color: white">
-            <li><a href="#lowcode/edit" style="color: white">编辑低代码页面</a></li>
+            <li><a href="#lowcode/editor" style="color: white">编辑低代码页面</a></li>
             <li ><a href="#" style="color: white">About</a></li>
             <li><a href="#" style="color: white">Profile</a></li>
             <li><a href="#" style="color: white">登录</a></li>
@@ -121,20 +121,16 @@
       </div>
     </div>
     <script>
-      fetch("https://lowcode.birdu.net/api/getTemplateList").then(res=>res.json()).then(({res})=>{
+      const base="https://101.43.131.142:14781"
+      fetch(base+"/api/getTemplateList").then(res=>res.json()).then(({res})=>{
         document.getElementById("low-code-navbar").innerHTML=res.reduce((pre,node)=>{
-          return pre+(node.display?`<li><a href="/#lowcode/${node.id}">${node.name}</a></li>`:"")
+          return pre+(node.display?`<li><a href="/#lowcode/preview/${node.id}">${node.name}</a></li>`:"")
         },'')
       })
       function router(){
-        const name=location.hash.match(/^#lowcode\/(?<name>.+)$/)?.groups?.name
-        let targetSrc=""
-        if(name==="edit"){
-          targetSrc="https://lowcode.birdu.net/editor"
-        }else if(Number(name)){
-          targetSrc=`https://lowcode.birdu.net/preview/${name}`
-        }
-        if(targetSrc){
+        const to=location.hash.match(/^#lowcode(?<to>.+)$/)?.groups?.to
+        if(to){
+          let targetSrc=base+to
           document.getElementById("myFrame").innerHTML=
           `<iframe style="border:0;width:calc(100% - 20px);height:calc(100% - 20px);"
             src="${targetSrc}"></iframe>`
