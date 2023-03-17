@@ -121,7 +121,7 @@
       </div>
     </div>
     <script>
-      fetch("https://101.43.131.142:14781/api/getTemplateList").then(res=>res.json()).then(({res})=>{
+      fetch("https://101.43.131.142:14782/api/getTemplateList").then(res=>res.json()).then(({res})=>{
         document.getElementById("low-code-navbar").innerHTML=res.reduce((pre,node)=>{
           return pre+(node.display?`<li><a href="/#lowcode/preview/${node.id}">${node.name}</a></li>`:"")
         },'')
